@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 @dp.callback_query(F.data == "Адреса")
-async def location_determination(callback: types.CallbackQuery):
+async def address_boxes(callback: types.CallbackQuery):
     builder = InlineKeyboardBuilder()
     builder.row(types.InlineKeyboardButton(
         text="Заказать бокс", callback_data="Заказать бокс")
