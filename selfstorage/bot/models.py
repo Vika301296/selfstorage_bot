@@ -44,4 +44,4 @@ class Belongings(models.Model):
 
     class Meta:
         verbose_name = 'Вещи'
-    verbose_name_plural = 'Вещи'
+        verbose_name_plural = 'Вещи'

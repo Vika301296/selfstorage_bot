@@ -1,4 +1,4 @@
-from config_data.config import BOT_TOKEN
+from .config_data.config import BOT_TOKEN
 from aiogram import Bot, Dispatcher
 
 

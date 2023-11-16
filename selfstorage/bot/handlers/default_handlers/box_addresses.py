@@ -17,4 +17,5 @@ async def address_boxes(callback: types.CallbackQuery):
                                   "2. <u>Суздальский 32</u>\n"
                                   "3. <u>Хакурате 325</u>\n"
                                   "4. <u>Митина 12</u>\n"
-                                  "5. <u>Садовая 281</u>", reply_markup=builder.as_markup())
+                                  "5. <u>Садовая 281</u>",
+                                  reply_markup=builder.as_markup())
