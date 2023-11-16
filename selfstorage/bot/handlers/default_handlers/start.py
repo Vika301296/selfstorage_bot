@@ -20,6 +20,7 @@ async def cmd_start(message: types.Message):
     if response.status_code == 200:
         try:
             data_from_db = response.json()
+            print(data_from_db)
         except json.decoder.JSONDecodeError:
             print("Error decoding JSON: Empty response or invalid JSON format.")
     else:
@@ -52,12 +53,13 @@ async def start(callback: types.CallbackQuery):
 
     django_url = "http://127.0.0.1:8000/bot/bot_command/"
     response = requests.get(django_url)
-    
+
     data_from_db = {}  # Provide a default value
-    
+
     if response.status_code == 200:
         try:
             data_from_db = response.json()
+            print(data_from_db)
         except json.decoder.JSONDecodeError:
             print("Error decoding JSON: Empty response or invalid JSON format.")
     else:

@@ -1,8 +1,9 @@
-# from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import JsonResponse
+from django.core.serializers import serialize
 from .models import User
 
 
 def bot_command(request):
     data_from_db = User.objects.all()
-    return HttpResponse(data_from_db)
+    serialized_data = serialize('json', data_from_db)
+    return JsonResponse(serialized_data, safe=False)
