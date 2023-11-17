@@ -12,7 +12,7 @@ async def cmd_start(message: types.Message):
     await set_bot_commands(bot)
     builder = InlineKeyboardBuilder()
 
-    django_url = "http://127.0.0.1:8000/bot/bot_command/"
+    django_url = "http://127.0.0.1:8000/bot"
     response = requests.get(django_url)
     
     data_from_db = {}  # Provide a default value

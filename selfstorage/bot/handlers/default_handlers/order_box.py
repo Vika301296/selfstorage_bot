@@ -1,14 +1,16 @@
 from selfstorage.bot.loader import dp
 from aiogram import types, F
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+# from bot.models import User
 
 
 @dp.callback_query(F.data == "Заказать бокс")
 async def location_determination(callback: types.CallbackQuery):
     # markup = types.ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
     # registered = запрос к бд есть ли пользователь в бд !!!
+    # user_id = callback.from_user.id
     registered = False
-    if registered:
+    if not registered:
         builder = InlineKeyboardBuilder()
         builder.row(types.InlineKeyboardButton(
             text="Назад", callback_data="Старт")
