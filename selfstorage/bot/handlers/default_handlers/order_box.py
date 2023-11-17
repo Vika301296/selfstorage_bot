@@ -1,16 +1,32 @@
 from selfstorage.bot.loader import dp
 from aiogram import types, F
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-# from selfstorage.bot.models import User
+import requests
+import json
 
 
 @dp.callback_query(F.data == "Заказать бокс")
 async def location_determination(callback: types.CallbackQuery):
     # markup = types.ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
     # registered = запрос к бд есть ли пользователь в бд !!!
-    # user_id = callback.from_user.id
-    # registered = User.objects.filter(telegram_id=user_id).exists()
-    registered = False
+    tg_id = callback.from_user.id
+    django_url = "http://127.0.0.1:8000/bot/check_registration/"
+    data = {'telegram_id': tg_id}
+
+    response = requests.post(django_url, json=data)
+
+    data_from_db = {}
+    if response.status_code == 200:
+        try:
+            data_from_db = response.json()
+            print(data_from_db)
+        except json.decoder.JSONDecodeError:
+            print("Error decoding JSON: Empty response or invalid JSON format.")
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+
+    registered = data_from_db.get('registered', False)
+
     if not registered:
         builder = InlineKeyboardBuilder()
         builder.row(types.InlineKeyboardButton(
