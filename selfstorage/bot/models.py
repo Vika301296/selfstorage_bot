@@ -5,25 +5,28 @@ class User(models.Model):
     name = models.CharField(
         max_length=200,
         verbose_name='ФИО')
-    telegram_username = models.CharField(
-        max_length=200,
-        verbose_name='Аккаунт в телеграмме', blank=True)
+    telegram_id = models.IntegerField(
+        verbose_name='Telegram ID', blank=True, null=True)
     phonenumber = models.CharField(
         'Номер телефона', max_length=20)
     pd_contract = models.FileField(
-        verbose_name='Договор об использовании ПД'
+        verbose_name='Договор об использовании ПД', blank=True, null=True
     )
     storage_unit = models.CharField(
         max_length=20,
-        verbose_name='Склад хранения')
+        verbose_name='Склад хранения',
+        blank=True, null=True)
     box_type = models.CharField(
         max_length=20,
-        verbose_name='Вид бокса')
+        verbose_name='Вид бокса',
+        blank=True, null=True)
     lease_start_date = models.DateTimeField(
-        verbose_name='Дата начала аренды'
+        verbose_name='Дата начала аренды',
+        blank=True, null=True
     )
     lease_end_date = models.DateTimeField(
-        verbose_name='Дата окончания аренды'
+        verbose_name='Дата окончания аренды',
+        blank=True, null=True
     )
 
     class Meta:

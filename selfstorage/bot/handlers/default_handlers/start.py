@@ -7,6 +7,8 @@ from selfstorage.bot.utils.set_bot_commands import set_bot_commands
 
 import requests
 
+
+
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     await set_bot_commands(bot)
