@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import Belongings, User
+from .models import Belongings, Box, Storage, User
 
 
 class BelongingsAdminForm(forms.ModelForm):
@@ -19,3 +19,5 @@ class BelongingsAdmin(admin.ModelAdmin):
 admin.site.register(Belongings, BelongingsAdmin)
 
 admin.site.register(User)
+admin.site.register(Box)
+admin.site.register(Storage)

@@ -19,7 +19,6 @@ import requests
 import json
 
 
-
 @dp.callback_query(F.data == "Регистрация")
 async def location_determination(callback: types.CallbackQuery):
     # input_file = FSInputFile('documentation\coglasie_na_obrabotku_personalnyh_dannyh.pdf')
@@ -32,9 +31,10 @@ async def location_determination(callback: types.CallbackQuery):
     builder.row(types.InlineKeyboardButton(
         text="Согласен", callback_data="Согласен")
     )
-    await callback.message.answer("Вы получили файл о согласии на обработку персональных данных.\n"
-                                  "Нажимая \"Согласен\" Вы подтверждаете подписание документа.",
-                                  reply_markup=builder.as_markup())
+    await callback.message.answer(
+        "Вы получили файл о согласии на обработку персональных данных.\n"
+        "Нажимая \"Согласен\" Вы подтверждаете подписание документа.",
+        reply_markup=builder.as_markup())
 
 
 @dp.callback_query(F.data == "Согласен")
@@ -44,7 +44,8 @@ async def location_determination(callback: types.CallbackQuery):
         [types.KeyboardButton(text="Назад")]
     ]
     markup = types.ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
-    await callback.message.answer("Нажмите на кнопку ниже, чтобы отправить контакт", reply_markup=markup)
+    await callback.message.answer(
+        "Нажмите на кнопку ниже, чтобы отправить контакт", reply_markup=markup)
 
 
 @dp.message(F.contact)
@@ -64,7 +65,8 @@ async def location(message: types.Message):
             data_from_db = response.json()
             print(data_from_db)
         except json.decoder.JSONDecodeError:
-            print("Error decoding JSON: Empty response or invalid JSON format.")
+            print(
+                "Error decoding JSON: Empty response or invalid JSON format.")
     else:
         print(f"Error: {response.status_code} - {response.text}")
 

@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.core.serializers import serialize
-from .models import User
+from .models import User, Storage
 import json
 import logging
 from django.views.decorators.http import require_POST
@@ -12,6 +12,7 @@ def bot_command(request):
     serialized_data = serialize('json', data_from_db)
     return JsonResponse(serialized_data, safe=False)
 
+
 @csrf_exempt
 @require_POST
 def create_user(request):
@@ -21,14 +22,31 @@ def create_user(request):
         telegram_id = data.get('telegram_id')
         phonenumber = data.get('phonenumber')
 
-        user, created = User.objects.get_or_create(telegram_id=telegram_id, defaults={'name': name, 'phonenumber': phonenumber})
+        user, created = User.objects.get_or_create(
+            telegram_id=telegram_id, defaults={
+                'name': name, 'phonenumber': phonenumber})
 
         if created:
-            return JsonResponse({"status": "success", "message": f"Пользователь {user.name} успешно зарегистрирован"})
+            return JsonResponse({
+                "status": "success",
+                "message":
+                f"Пользователь {user.name} успешно зарегистрирован"})
         else:
-            return JsonResponse({"status": "error", "message": "Пользователь уже зарегистрирован"})
+            return JsonResponse(
+                {"status": "error",
+                 "message": "Пользователь уже зарегистрирован"})
 
     except Exception as e:
-        return JsonResponse({"status": e, "message": "Произошла ошибка при обработке запроса"})
+        return JsonResponse(
+            {"status": e,
+             "message": "Произошла ошибка при обработке запроса"})
 
 
+def my_belongings(request):
+    pass
+
+
+def storage_address(request):
+    storages = Storage.objects.all()
+    storage_list = [storage.address for storage in storages]
+    return JsonResponse(storage_list, safe=False)

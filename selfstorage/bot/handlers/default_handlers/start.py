@@ -8,23 +8,23 @@ from selfstorage.bot.utils.set_bot_commands import set_bot_commands
 import requests
 
 
-
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     await set_bot_commands(bot)
     builder = InlineKeyboardBuilder()
 
-    django_url = "http://127.0.0.1:8000/bot"
+    django_url = "http://127.0.0.1:8000/bot/"
     response = requests.get(django_url)
-    
+
     data_from_db = {}  # Provide a default value
-    
+
     if response.status_code == 200:
         try:
             data_from_db = response.json()
             print(data_from_db)
         except json.decoder.JSONDecodeError:
-            print("Error decoding JSON: Empty response or invalid JSON format.")
+            print(
+                "Error decoding JSON: Empty response or invalid JSON format.")
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
@@ -48,6 +48,7 @@ async def cmd_start(message: types.Message):
         f"\n\nData from Django: {data_from_db}",
         reply_markup=builder.as_markup())
 
+
 @dp.callback_query(F.data == "Старт")
 async def start(callback: types.CallbackQuery):
     await set_bot_commands(bot)
@@ -63,7 +64,8 @@ async def start(callback: types.CallbackQuery):
             data_from_db = response.json()
             print(data_from_db)
         except json.decoder.JSONDecodeError:
-            print("Error decoding JSON: Empty response or invalid JSON format.")
+            print(
+                "Error decoding JSON: Empty response or invalid JSON format.")
     else:
         print(f"Error: {response.status_code} - {response.text}")
 
