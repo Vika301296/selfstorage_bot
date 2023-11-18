@@ -3,8 +3,10 @@ from django.core.serializers import serialize
 from .models import User, Storage
 import json
 import logging
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_http_methods
 
 
 def bot_command(request):
