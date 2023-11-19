@@ -1,12 +1,12 @@
 from django.http import JsonResponse
 from django.core.serializers import serialize
-from .models import User, Storage
+from .models import Belongings, User, Storage
 import json
-import logging
-from django.views.decorators.http import require_POST, require_GET
+# import logging
+from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
-from django.views.decorators.http import require_http_methods
+# from django.shortcuts import get_object_or_404
+# from django.views.decorators.http import require_http_methods
 
 
 def bot_command(request):
@@ -15,8 +15,6 @@ def bot_command(request):
     return JsonResponse(serialized_data, safe=False)
 
 
-@csrf_exempt
-@require_POST
 def create_user(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
@@ -44,11 +42,35 @@ def create_user(request):
              "message": "Произошла ошибка при обработке запроса"})
 
 
-def my_belongings(request):
-    pass
+@csrf_exempt
+@require_POST
+def my_belongings(request, user_telegram_id):
+    user = User.objects.get(telegram_id=user_telegram_id)
+    if user.rented_box:
+        belongings = Belongings.objects.filter(box=user.rented_box)
+        serialized_data = [
+            {'description': belonging.description} for belonging in belongings]
+        return JsonResponse(serialized_data, safe=False)
+    else:
+        return JsonResponse({'error': 'Вы не снимаете бокс'}, status=400)
 
 
 def storage_address(request):
     storages = Storage.objects.all()
     storage_list = [storage.address for storage in storages]
     return JsonResponse(storage_list, safe=False)
+
+
+@csrf_exempt
+@require_POST
+def check_registration(request):
+    data = json.loads(request.body.decode('utf-8'))
+    telegram_id = data.get('telegram_id')
+    if telegram_id:
+        try:
+            registered = True
+        except User.DoesNotExist:
+            registered = False
+    else:
+        registered = False
+    return JsonResponse({'registered': registered})
