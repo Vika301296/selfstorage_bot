@@ -11,10 +11,7 @@ async def location_determination(callback: types.CallbackQuery):
     my_belongings_url = 'http://127.0.0.1:8000/bot/my_belongings/'
     check_registration_url = "http://127.0.0.1:8000/bot/check_registration/"
     data = {'telegram_id': tg_id}
-    check_registration_response = requests.post(check_registration_url,
-                                                json=data)
-    belongings_response = requests.get(my_belongings_url, json=data)
-
+    response = requests.get(url, json=data)
     # csrf_token = await dp.storage.get_data(user=callback.from_user.id)
     # headers = {'X-CSRFToken': csrf_token}
 
@@ -47,5 +44,4 @@ async def location_determination(callback: types.CallbackQuery):
     else:
         # belongings = belongings_response.json()
 
-        await callback.message.answer(
-            f"Вещи на хранении: {registration_status}")
+        await callback.message.answer(f"Вещи на хранении: {data_from_db}")
