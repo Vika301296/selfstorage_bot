@@ -44,15 +44,23 @@ def create_user(request):
 
 @csrf_exempt
 @require_POST
-def my_belongings(request, user_telegram_id):
-    user = User.objects.get(telegram_id=user_telegram_id)
-    if user.rented_box:
-        belongings = Belongings.objects.filter(box=user.rented_box)
-        serialized_data = [
-            {'description': belonging.description} for belonging in belongings]
-        return JsonResponse(serialized_data, safe=False)
-    else:
-        return JsonResponse({'error': 'Вы не снимаете бокс'}, status=400)
+def my_belongings(request):
+    try:
+        data = json.loads(request.body)
+        user_telegram_id = data.get('telegram_id')
+        user = User.objects.get(telegram_id=user_telegram_id)
+
+        if user.rented_box:
+            belongings = Belongings.objects.filter(box=user.rented_box)
+            serialized_data = [
+                belonging.description for belonging in belongings]
+            return JsonResponse(serialized_data, safe=False)
+        else:
+            return JsonResponse({'error': 'Вы не снимаете бокс'}, status=400)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=400)
 
 
 @csrf_exempt
