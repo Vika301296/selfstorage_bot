@@ -3,7 +3,7 @@ from django.core.serializers import serialize
 from .models import Belongings, User, Storage
 import json
 # import logging
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_exempt
 # from django.shortcuts import get_object_or_404
 # from django.views.decorators.http import require_http_methods
@@ -55,7 +55,9 @@ def my_belongings(request, user_telegram_id):
         return JsonResponse({'error': 'Вы не снимаете бокс'}, status=400)
 
 
-def storage_address(request):
+@csrf_exempt
+@require_GET
+def get_storage_address(request):
     storages = Storage.objects.all()
     storage_list = [storage.address for storage in storages]
     return JsonResponse(storage_list, safe=False)

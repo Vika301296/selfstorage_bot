@@ -55,24 +55,23 @@ async def location_determination(callback: types.CallbackQuery):
 @dp.callback_query(F.data == "Адреса боксов")
 async def location_determination(callback: types.CallbackQuery):
     builder = InlineKeyboardBuilder()
-    builder.row(types.InlineKeyboardButton(
-        text="1. Ленина 56", callback_data="Ленина 56")
-    )
-    builder.row(types.InlineKeyboardButton(
-        text="2. Суздальский 32", callback_data="Суздальский 32")
-    )
-    builder.row(types.InlineKeyboardButton(
-        text="3. Хакурате 325", callback_data="Хакурате 325")
-    )
-    builder.row(types.InlineKeyboardButton(
-        text="4. Митина 12", callback_data="Митина 12")
-    )
-    builder.row(types.InlineKeyboardButton(
-        text="5. Садовая 281", callback_data="Садовая 281")
-    )
-    builder.row(types.InlineKeyboardButton(
-        text="Назад", callback_data="Заказать бокс")
-    )
+    django_url = "http://127.0.0.1:8000/bot/storage_address/"
+
+    response = requests.get(django_url)
+
+    addresses = {}
+    if response.status_code == 200:
+        try:
+            addresses = response.json()
+            print(addresses)
+        except json.decoder.JSONDecodeError:
+            print("Error decoding JSON: Empty response or invalid JSON format.")
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+    for address in addresses:
+        builder.row(types.InlineKeyboardButton(
+            text=f"{address}", callback_data=f"{address}"))
+
     await callback.message.answer("Выберите адрес бокса",
                                   reply_markup=builder.as_markup())
 
