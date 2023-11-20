@@ -1,10 +1,14 @@
 import asyncio
+import os
 from datetime import date
 import logging
 from django_cron import CronJobBase, Schedule
 from selfstorage.bot.models import User
 from selfstorage.bot.views import get_expiry_message
 from aiogram import Bot, Dispatcher, types
+
+
+token = os.getenv('BOT_TOKEN')
 
 
 class CheckLeaseDatesCronJob(CronJobBase):
@@ -19,7 +23,7 @@ class CheckLeaseDatesCronJob(CronJobBase):
 
     def do(self):
         # Your bot initialization logic, make sure to configure your bot correctly
-        bot = Bot(token='6790254442:AAHvAJI029tQVBlGTglTM11pJcOK05SZKd8')
+        bot = Bot(token=token)
         self.dp = Dispatcher(bot)
         logging.info("Cron job started")
         today = date.today()
