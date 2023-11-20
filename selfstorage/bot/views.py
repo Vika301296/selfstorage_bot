@@ -5,6 +5,7 @@ import json
 # import logging
 from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_exempt
+from datetime import date, timedelta
 # from django.shortcuts import get_object_or_404
 # from django.views.decorators.http import require_http_methods
 
@@ -84,3 +85,27 @@ def check_registration(request):
     else:
         registered = False
     return JsonResponse({'registered': registered})
+
+
+@csrf_exempt
+def get_expiry_message(user, today):
+    # data = json.loads(request.body.decode('utf-8'))
+    # telegram_id = data.get('telegram_id')
+    # today = date.today()
+    # user = User.objects.get(telegram_id=telegram_id)
+    one_month_from_today = today + timedelta(month=1)
+    two_weeks_from_today = today + timedelta(days=14)
+    one_week_from_today = today + timedelta(days=7)
+    three_days_from_today = today + timedelta(days=3)
+
+    if user.lease_end_date <= today:
+        message = "Срок хранения ваших вещей закончился"
+    elif user.lease_end_date <= three_days_from_today:
+        message = "Срок хранения ваших вещей закончится через 3 дня"
+    elif user.lease_end_date <= one_week_from_today:
+        message = "Срок хранения ваших вещей закончится через 7 дней"
+    elif user.lease_end_date <= two_weeks_from_today:
+        message = "Срок хранения ваших вещей закончится через 2 недели"
+    elif user.lease_end_date <= one_month_from_today:
+        message = "Срок хранения ваших вещей закончится через 1 месяц"
+    return message

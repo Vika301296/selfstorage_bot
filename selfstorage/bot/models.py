@@ -66,11 +66,11 @@ class User(models.Model):
         blank=True,
         null=True
     )
-    lease_start_date = models.DateTimeField(
+    lease_start_date = models.DateField(
         verbose_name='Дата начала аренды',
         blank=True, null=True
     )
-    lease_end_date = models.DateTimeField(
+    lease_end_date = models.DateField(
         verbose_name='Дата окончания аренды',
         blank=True, null=True
     )
