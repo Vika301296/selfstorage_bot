@@ -22,7 +22,6 @@ class CheckLeaseDatesCronJob(CronJobBase):
             telegram_id, message, parse_mode=types.ParseMode.MARKDOWN)
 
     def do(self):
-        # Your bot initialization logic, make sure to configure your bot correctly
         bot = Bot(token=token)
         self.dp = Dispatcher(bot)
         logging.info("Cron job started")
